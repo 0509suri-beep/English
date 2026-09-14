@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 1 英语家教教学工作台</title>
+<style>
+:root{
+  --bg:#f4f7fb;--card:#fff;--text:#243247;--muted:#718096;
+  --primary:#6b8afd;--primary-light:#edf1ff;--mint:#dff5ed;
+  --yellow:#fff3cc;--border:#e5eaf2;--danger:#e87575;--shadow:0 8px 24px rgba(44,62,100,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text)}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;border:0}
+.app{display:flex;min-height:100vh}
+.sidebar{width:245px;background:#fff;border-right:1px solid var(--border);padding:24px 16px;position:sticky;top:0;height:100vh}
+.logo{font-weight:800;font-size:20px;line-height:1.4;margin-bottom:6px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:28px}
+.nav button{display:block;width:100%;text-align:left;background:transparent;padding:13px 14px;border-radius:12px;margin:5px 0;color:#58677d}
+.nav button.active{background:var(--primary-light);color:#526fe4;font-weight:700}
+.main{flex:1;min-width:0;padding:28px;max-width:1450px;margin:auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:24px}
+h1{font-size:28px;margin:0 0 5px}
+h2{font-size:21px;margin:0 0 15px}
+h3{font-size:16px;margin:0 0 8px}
+.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:var(--shadow);min-width:0}
+.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-6{grid-column:span 6}.span-4{grid-column:span 4}
+.btn{padding:10px 15px;border-radius:10px;background:#eef2f8;color:#40516a;font-weight:600}
+.btn.primary{background:var(--primary);color:white}.btn.danger{background:#fff0f0;color:#c95d5d}.btn.small{padding:7px 10px;font-size:13px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.stat{font-size:34px;font-weight:800;margin:10px 0}
+.progress{height:10px;background:#edf0f6;border-radius:99px;overflow:hidden}
+.progress>div{height:100%;background:var(--primary);width:0%;transition:width .2s}
+.timeline{display:grid;gap:9px}
+.stage{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);border-radius:12px}
+.stage.active{background:var(--primary-light);border-color:#cbd5ff}
+.stage .time{margin-left:auto;color:var(--muted);font-size:13px;white-space:nowrap}
+input,textarea,select{width:100%;border:1px solid var(--border);border-radius:10px;padding:10px;background:#fff;color:var(--text)}
+textarea{min-height:120px;resize:vertical}
+label{font-size:13px;color:var(--muted);display:block;margin:12px 0 6px}
+.word-card{text-align:center;padding:28px;background:linear-gradient(135deg,#f6f8ff,#fff)}
+.word{font-size:42px;font-weight:800;margin:12px 0}
+.phonetic{font-size:21px;color:#6075c9}
+.meaning{font-size:19px;margin:10px 0 20px}
+.pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:15px}
+.pill{padding:7px 11px;border-radius:99px;background:#f0f3f8;color:#66758a;font-size:13px}
+.pill.active{background:var(--primary);color:#fff}
+.word-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.word-item{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff;text-align:left}
+.word-item.mastered{background:#effaf5;border-color:#bce8d4}
+.word-item strong{display:block;font-size:17px;margin-bottom:4px}
+.exercise-question{font-size:28px;font-weight:800;text-align:center;padding:30px 10px}
+.option-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.option{padding:14px;border:1px solid var(--border);border-radius:12px;background:#fff;text-align:left}
+.option.correct{background:#e6f8ee;border-color:#80d2a5}.option.wrong{background:#fff0f0;border-color:#e9a0a0}
+.lesson-text{font-size:20px;line-height:2;white-space:pre-wrap}
+.lesson-line{padding:6px 10px;border-radius:8px}.lesson-line.active{background:#fff3cc}
+.notice{padding:12px 14px;border-radius:12px;background:#fff8df;color:#866b20;margin:12px 0}
+.hidden{display:none!important}
+.small{font-size:13px}
+.footer-note{margin-top:24px;color:var(--muted);font-size:13px;text-align:center}
+@media(max-width:900px){
+ .sidebar{width:190px;padding:18px 10px}.main{padding:18px}.span-8,.span-6,.span-4{grid-column:span 12}
+}
+@media(max-width:600px){
+ .app{display:block}.sidebar{position:static;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border)}
+ .nav{display:flex;overflow:auto;gap:6px}.nav button{white-space:nowrap;width:auto;margin:0}
+ h1{font-size:23px}.word{font-size:34px}.option-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="logo">📘 英语家教工作台</div>
+  <div class="sub">四年级 · Unit 1 · 90分钟课堂</div>
+  <nav class="nav">
+    <button class="active" data-page="dashboard">课堂首页</button>
+    <button data-page="timer">课堂计时</button>
+    <button data-page="words">单词教学</button>
+    <button data-page="phonics">音标教学</button>
+    <button data-page="exercise">读写练习</button>
+    <button data-page="reading">课文朗读</button>
+    <button data-page="notes">课堂记录</button>
+    <button data-page="homework">复习作业</button>
+  </nav>
+</aside>
+<main class="main">
+  <div id="app"></div>
+  <div class="footer-note">内容会自动保存在当前浏览器。适合电脑、平板和手机使用。</div>
+</main>
+</div>
+
+<script>
+const defaultWords=[
+["sport","/spɔːt/","体育运动","运动类"],["jump","/dʒʌmp/","跳","运动类"],["high","/haɪ/","高高地","运动类"],["far","/fɑː/","远","运动类"],["ping-pong","/ˈpɪŋ pɒŋ/","乒乓球运动","运动类"],["volleyball","/ˈvɒlibɔːl/","排球运动","运动类"],
+["across","/əˈkrɒs/","从一边到另一边；穿过","基础词汇"],["hope","/həʊp/","希望","基础词汇"],["lose","/luːz/","失去","基础词汇"],["because","/bɪˈkɒz/","因为","基础词汇"],["because of sb / sth","","因为某人/某事","基础词汇"],["cancer","/ˈkænsə/","癌（症）","基础词汇"],["other","/ˈʌðə/","别的；另外的；其他的","基础词汇"],["money","/ˈmʌni/","钱","基础词汇"],["hard","/hɑːd/","困难的","基础词汇"],["kind","/kaɪnd/","亲切的；友好的；善良的","基础词汇"],["keep","/kiːp/","持续；继续","基础词汇"],["month","/mʌnθ/","一个月","基础词汇"],
+["ill","/ɪl/","生病的","坚持与梦想"],["anymore","/ˌeniˈmɔː/","（不）再","坚持与梦想"],["year","/jɪə/","年；年度","坚持与梦想"],["remember","/rɪˈmembə/","纪念；记住","坚持与梦想"],["fail","/feɪl/","失败","坚持与梦想"],["give","/ɡɪv/","给子","坚持与梦想"],["give up","","放弃","坚持与梦想"],["never","/ˈnevə/","绝不；永不","坚持与梦想"],["try","/traɪ/","努力；尝试","坚持与梦想"],["try your best","","尽最大努力","坚持与梦想"],["star","/stɑː/","明星；最出色者","坚持与梦想"],["ability","/əˈbɪləti/","才能；能力","坚持与梦想"],["player","/ˈpleɪə/","运动员；选手；球员","坚持与梦想"]
+].map((w,i)=>({id:i,word:w[0],phonetic:w[1],meaning:w[2],category:w[3],mastered:false}));
+
+let state=JSON.parse(localStorage.getItem("unit1_state")||"null")||{
+ words:defaultWords,stage:0,elapsed:0,running:false,notes:"",homework:"朗读 Unit 1 课文2遍；复习重点单词；默写 sport、jump、hope、because、hard。",text:"",
+ currentWord:0,category:"全部",showMeaning:true,showPhonetic:true,exerciseType:"英译中",exerciseIndex:0,exerciseScore:0,exerciseAnswer:null,readingIndex:0,readingProblems:""
+};
+const stages=[["开场＋基础摸底",10],["音标和发音",20],["Unit 1单词读写",30],["休息",5],["课文朗读",20],["复习＋作业",5]];
+let timer=null;
+function save(){localStorage.setItem("unit1_state",JSON.stringify(state))}
+function fmt(sec){return String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")}
+function speak(t){if("speechSynthesis" in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.78;speechSynthesis.speak(u)}}
+function el(id){return document.getElementById(id)}
+function renderPage(page="dashboard"){
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+ const app=el("app");
+ if(page==="dashboard")app.innerHTML=dashboard();
+ if(page==="timer")app.innerHTML=timerPage();
+ if(page==="words")app.innerHTML=wordsPage();
+ if(page==="phonics")app.innerHTML=phonicsPage();
+ if(page==="exercise")app.innerHTML=exercisePage();
+ if(page==="reading")app.innerHTML=readingPage();
+ if(page==="notes")app.innerHTML=notesPage();
+ if(page==="homework")app.innerHTML=homeworkPage();
+ bindCommon(page);
+}
+function header(title,desc){return `<div class="topbar"><div><h1>${title}</h1><div class="muted">${desc}</div></div><div class="actions"><button class="btn" onclick="resetAll()">重置本地数据</button></div></div>`}
+function dashboard(){let total=90*60,done=state.elapsed,totalPct=Math.min(100,done/total*100);
+return header("Unit 1 英语教学工作台","四年级家教第一节课 · 音标、单词读写、课文朗读")+
+`<div class="grid">
+<div class="card span-8"><h2>课堂进度</h2><div class="stat">${fmt(Math.max(0,total-done))}</div><div class="muted">总剩余时间</div><div class="progress" style="margin:18px 0"><div style="width:${totalPct}%"></div></div><div class="actions"><button class="btn primary" onclick="go('timer')">进入课堂计时</button><button class="btn" onclick="go('words')">开始单词教学</button></div></div>
+<div class="card span-4"><h2>今日目标</h2><p>✓ 认识基础音标</p><p>✓ 读写 Unit 1 重点单词</p><p>✓ 跟读并朗读课文</p><p>✓ 完成复习和作业布置</p></div>
+<div class="card span-12"><h2>教学环节</h2><div class="timeline">${stages.map((s,i)=>`<div class="stage ${i===state.stage?'active':''}"><b>${i+1}</b><div><strong>${s[0]}</strong><div class="muted small">${s[1]}分钟</div></div><div class="time">${i===state.stage?'当前环节':'待进行'}</div></div>`).join("")}</div></div>
+</div>`}
+function timerPage(){return header("课堂计时","按照90分钟课程安排进行教学")+
+`<div class="grid"><div class="card span-6"><h2>总计时</h2><div class="stat" id="totalClock">${fmt(90*60-state.elapsed)}</div><div class="progress"><div id="totalProgress" style="width:${state.elapsed/5400*100}%"></div></div><div class="actions" style="margin-top:18px"><button class="btn primary" id="startBtn">${state.running?"暂停课堂":"开始课堂"}</button><button class="btn" onclick="resetTimer()">重置计时</button></div></div>
+<div class="card span-6"><h2>当前环节</h2><h3 id="stageTitle">${stages[state.stage][0]}</h3><div class="stat" id="stageClock">${fmt(stageElapsedRemaining())}</div><div class="actions"><button class="btn" onclick="prevStage()">上一个</button><button class="btn primary" onclick="nextStage()">下一个</button></div></div>
+<div class="card span-12"><h2>课程安排</h2><div class="timeline">${stages.map((s,i)=>`<div class="stage ${i===state.stage?'active':''}"><b>${i+1}</b><div style="flex:1"><strong>${s[0]}</strong><div class="muted small">${s[1]}分钟</div></div><button class="btn small" onclick="setStage(${i})">进入</button></div>`).join("")}</div></div></div>`}
+function stageElapsedRemaining(){let before=stages.slice(0,state.stage).reduce((a,b)=>a+b[1]*60,0);return Math.max(0,stages[state.stage][1]*60-(state.elapsed-before))}
+function wordsPage(){let filtered=state.words.filter(w=>(state.category==="全部"||w.category===state.category));let w=filtered[state.currentWord%Math.max(1,filtered.length)]||state.words[0];
+return header("单词教学","点击单词卡进行示范、跟读和掌握标记")+
+`<div class="card"><div class="pills">${["全部","运动类","基础词汇","坚持与梦想"].map(c=>`<button class="pill ${state.category===c?'active':''}" onclick="setCategory('${c}')">${c}</button>`).join("")}</div>
+<div class="grid"><div class="card word-card span-6"><div class="muted">${w.category}</div><div class="word">${w.word}</div>${state.showPhonetic?`<div class="phonetic">${w.phonetic||"可补充音标"}</div>`:""}${state.showMeaning?`<div class="meaning">${w.meaning}</div>`:""}<div class="actions" style="justify-content:center"><button class="btn primary" onclick="speak('${w.word.replace(/'/g,"\\'")}')">🔊 播放发音</button><button class="btn" onclick="toggleMeaning()">中英切换</button><button class="btn" onclick="togglePhonetic()">音标切换</button></div><div class="actions" style="justify-content:center;margin-top:10px"><button class="btn" onclick="prevWord()">上一个</button><button class="btn" onclick="nextWord()">下一个</button><button class="btn ${w.mastered?'primary':''}" onclick="toggleMastered(${w.id})">${w.mastered?'已掌握':'标记掌握'}</button></div></div>
+<div class="card span-6"><h2>单词列表</h2><input id="wordSearch" placeholder="搜索英文或中文" oninput="filterWords(this.value)"><div class="word-list" id="wordList" style="margin-top:12px">${filtered.map(x=>`<button class="word-item ${x.mastered?'mastered':''}" onclick="selectWord(${x.id})"><strong>${x.word}</strong><span class="muted small">${x.meaning}</span></button>`).join("")}</div></div></div></div>`}
+function phonicsPage(){return header("音标教学","第一节课只讲基础发音，不要求一次学完48个音标")+
+`<div class="grid"><div class="card span-6"><h2>今日发音重点</h2>${[["/p/","sport、ping-pong","双唇闭合后送气"],["/dʒ/","jump","类似“居”开头，但要清晰送音"],["/aɪ/","high、try","从张口音滑向短音"],["/əʊ/","hope","从中性元音滑向圆唇音"]].map(x=>`<div class="stage"><div><h3>${x[0]}</h3><div>${x[1]}</div><div class="muted small">${x[2]}</div></div><button class="btn small" onclick="speak('${x[1].split('、')[0]}')">播放示范</button></div>`).join("")}</div>
+<div class="card span-6"><h2>课堂操作流程</h2><p>1. 教师示范发音。</p><p>2. 学生听音并模仿。</p><p>3. 结合单词反复练习。</p><p>4. 让学生独立读出单词。</p><div class="notice">纠正2—3个最重要的问题即可，不要每读一个音都打断孩子。</div><label>本节音标记录</label><textarea id="phonicsNotes" placeholder="记录孩子掌握了哪些音标、哪些发音需要复习……">${state.phonicsNotes||""}</textarea><button class="btn primary" onclick="state.phonicsNotes=el('phonicsNotes').value;save();alert('已保存')">保存记录</button></div></div>`}
+function exercisePage(){let w=state.words[state.exerciseIndex%state.words.length];let q=state.exerciseType==="英译中"?w.word:w.meaning;
+return header("单词读写练习","随机抽题，课堂上让学生口头回答或在本子上书写")+
+`<div class="card"><div class="actions"><select id="exerciseType" onchange="state.exerciseType=this.value;state.exerciseAnswer=null;save();renderPage('exercise')"><option ${state.exerciseType==="英译中"?"selected":""}>英译中</option><option ${state.exerciseType==="中译英"?"selected":""}>中译英</option><option ${state.exerciseType==="补全单词"?"selected":""}>补全单词</option></select><button class="btn" onclick="newExercise()">随机抽题</button></div><div class="exercise-question">${state.exerciseType==="补全单词"?maskWord(w.word):q}</div><div class="option-grid">${exerciseOptions(w).map(o=>`<button class="option ${state.exerciseAnswer===o?'correct':''}" onclick="answerExercise('${o.replace(/'/g,"\\'")}')">${o}</button>`).join("")}</div>${state.exerciseAnswer?`<div class="notice">答案：${state.exerciseType==="英译中"?w.meaning:w.word}</div>`:""}<p class="muted small">当前得分：${state.exerciseScore}</p></div>`}
+function maskWord(s){if(s.length<3)return s;let i=Math.floor(s.length/2);return s.slice(0,i)+"_"+s.slice(i+1)}
+function exerciseOptions(w){let correct=state.exerciseType==="英译中"?w.meaning:w.word;let arr=[correct];while(arr.length<4){let x=state.words[Math.floor(Math.random()*state.words.length)];let v=state.exerciseType==="英译中"?x.meaning:x.word;if(!arr.includes(v))arr.push(v)}return arr.sort(()=>Math.random()-.5)}
+function readingPage(){let lines=state.text.split(/\n+/).filter(Boolean);return header("课文朗读","粘贴 Unit 1 课文后，逐句带读并记录问题")+
+`<div class="grid"><div class="card span-6"><h2>课文输入</h2><textarea id="lessonText" placeholder="把 Unit 1 课文粘贴到这里……">${state.text}</textarea><button class="btn primary" style="margin-top:10px" onclick="state.text=el('lessonText').value;state.readingIndex=0;save();renderPage('reading')">保存课文</button></div><div class="card span-6"><h2>逐句朗读</h2>${lines.length?`<div class="lesson-text">${lines.map((l,i)=>`<div class="lesson-line ${i===state.readingIndex?'active':''}">${l}</div>`).join("")}</div><div class="actions" style="margin-top:14px"><button class="btn" onclick="state.readingIndex=Math.max(0,state.readingIndex-1);save();renderPage('reading')">上一句</button><button class="btn primary" onclick="speak(lines[${state.readingIndex}])">播放当前句</button><button class="btn" onclick="state.readingIndex=Math.min(${lines.length-1},state.readingIndex+1);save();renderPage('reading')">下一句</button></div>`:`<div class="notice">请先在左侧粘贴课文。不要在没有原文的情况下编造课文。</div>`}</div><div class="card span-12"><h2>朗读问题记录</h2><textarea id="readingProblems" placeholder="记录孩子读错的单词、停顿和需要复习的句子……">${state.readingProblems||""}</textarea><button class="btn primary" onclick="state.readingProblems=el('readingProblems').value;save();alert('已保存')">保存记录</button></div></div>`}
+function notesPage(){return header("课堂记录","记录学生表现，方便下一次备课")+
+`<div class="card"><label>学生今天的表现</label><textarea id="notes">${state.notes}</textarea><label>下节课计划</label><textarea id="nextPlan">${state.nextPlan||""}</textarea><button class="btn primary" onclick="state.notes=el('notes').value;state.nextPlan=el('nextPlan').value;save();alert('已保存课堂记录')">保存课堂记录</button></div>`}
+function homeworkPage(){return header("复习与作业","下课前直接展示或复制给家长")+
+`<div class="card"><h2>本节课作业</h2><textarea id="homework">${state.homework}</textarea><div class="actions" style="margin-top:12px"><button class="btn primary" onclick="state.homework=el('homework').value;save();alert('已保存作业')">保存作业</button><button class="btn" onclick="copyText(state.homework)">复制作业文本</button></div><div class="notice">建议：朗读课文2遍；复习重点单词；默写5个单词；熟读 give up、try your best、never give up。</div></div>`}
+function bindCommon(page){if(page==="timer")updateTimerUI()}
+function go(page){renderPage(page)}
+function setCategory(c){state.category=c;state.currentWord=0;save();renderPage("words")}
+function currentFiltered(){return state.words.filter(w=>state.category==="全部"||w.category===state.category)}
+function selectWord(id){let arr=currentFiltered();state.currentWord=Math.max(0,arr.findIndex(w=>w.id===id));save();renderPage("words")}
+function nextWord(){state.currentWord++;save();renderPage("words")}
+function prevWord(){state.currentWord=Math.max(0,state.currentWord-1);save();renderPage("words")}
+function toggleMeaning(){state.showMeaning=!state.showMeaning;save();renderPage("words")}
+function togglePhonetic(){state.showPhonetic=!state.showPhonetic;save();renderPage("words")}
+function toggleMastered(id){let w=state.words.find(w=>w.id===id);w.mastered=!w.mastered;save();renderPage("words")}
+function filterWords(v){document.querySelectorAll("#wordList .word-item").forEach(b=>b.style.display=b.innerText.toLowerCase().includes(v.toLowerCase())?"block":"none")}
+function newExercise(){state.exerciseIndex=Math.floor(Math.random()*state.words.length);state.exerciseAnswer=null;save();renderPage("exercise")}
+function answerExercise(a){let w=state.words[state.exerciseIndex%state.words.length];let correct=state.exerciseType==="英译中"?w.meaning:w.word;state.exerciseAnswer=a;if(a===correct)state.exerciseScore++;save();renderPage("exercise")}
+function copyText(t){navigator.clipboard?navigator.clipboard.writeText(t).then(()=>alert("已复制")):alert(t)}
+function resetTimer(){state.elapsed=0;state.stage=0;state.running=false;stopTimer();save();renderPage("timer")}
+function resetAll(){if(confirm("确定清除本地记录并恢复默认内容吗？")){localStorage.removeItem("unit1_state");location.reload()}}
+function stopTimer(){if(timer){clearInterval(timer);timer=null}}
+function startTimer(){state.running=!state.running;if(state.running){timer=setInterval(()=>{if(state.elapsed<5400){state.elapsed++;if(state.elapsed>=5400){state.elapsed=5400;state.running=false;stopTimer();alert("90分钟课堂结束");}}save();updateTimerUI()},1000)}else stopTimer();save();updateTimerUI()}
+function updateTimerUI(){let total=el("totalClock"),stage=el("stageClock"),bar=el("totalProgress"),btn=el("startBtn");if(!total)return;total.textContent=fmt(5400-state.elapsed);stage.textContent=fmt(stageElapsedRemaining());bar.style.width=(state.elapsed/5400*100)+"%";btn.textContent=state.running?"暂停课堂":"开始课堂"}
+function setStage(i){state.stage=i;save();renderPage("timer")}
+function prevStage(){state.stage=Math.max(0,state.stage-1);save();renderPage("timer")}
+function nextStage(){state.stage=Math.min(stages.length-1,state.stage+1);save();renderPage("timer")}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.page)));
+document.addEventListener("click",e=>{if(e.target.id==="startBtn")startTimer()});
+renderPage();
+</script>
+</body>
+</html>
