@@ -124,6 +124,7 @@ function renderPage(page="dashboard"){
  document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
  const app=el("app");
  if(page==="dashboard")app.innerHTML=dashboard();
+ if(page==="lessonplan")app.innerHTML=lessonPlanPage();
  if(page==="timer")app.innerHTML=timerPage();
  if(page==="words")app.innerHTML=wordsPage();
  if(page==="phonics")app.innerHTML=phonicsPage();
@@ -182,6 +183,39 @@ function gameAnswer(btn,a,c){if(a===c){btn.classList.add('correct');state.gameSc
 function newGame(){state.gameIndex=Math.floor(Math.random()*state.words.length);save();renderPage('games')}
 function echoPage(){let w=state.words[state.gameIndex%state.words.length];return header('回声小达人','教师先示范，孩子模仿并完成一次朗读')+`<div class="card"><div class="word-card"><div class="muted">请孩子看着单词</div><div class="word">${w.word}</div><div class="phonetic">${w.phonetic||''}</div><div class="meaning">${w.meaning}</div><div class="actions" style="justify-content:center"><button class="btn primary" onclick="speak('${w.word.replace(/'/g,"\'")}')">🔊 老师示范</button><button class="btn" onclick="state.echoCount++;reward(1,2);save();renderPage('echo')">孩子读对了＋⭐1</button><button class="btn" onclick="state.gameIndex++;save();renderPage('echo')">换一个单词</button></div><p>已完成模仿：${state.echoCount} 次</p></div></div>`}
 function rewardsPage(){return header('奖励中心','把努力变成看得见的成就')+`<div class="grid"><div class="card span-6"><h2>我的奖励</h2><div class="reward">⭐ ${state.stars}</div><p>金币：🪙 ${state.coins}</p><div class="meter"><div style="width:${Math.min(100,state.stars%10*10)}%"></div></div><p class="muted">每获得10颗星，可以兑换一次小奖励。</p></div><div class="card span-6"><h2>教师口头奖励</h2><p>“你今天比刚才更勇敢了。”</p><p>“你已经能自己读出来了。”</p><p>“这次发音进步很明显。”</p><button class="btn primary" onclick="reward(3,5);alert('奖励已加上：⭐3、🪙5')">表现优秀＋⭐3</button></div></div>`}
+
+
+function lessonPlanPage(){return header("90分钟进阶备课教案","家教主线：音标 → 拼读 → 背单词 → 课本句型 → 朗读输出")+
+`<div class="grid">
+<div class="card span-12"><div class="notice"><b>本节课核心：</b>不追求讲完所有内容，而是让孩子学会用发音记单词，并能说出 Can you…? / Yes, I can. / No, I can’t.</div><div class="actions"><button class="btn primary" onclick="go('timer')">打开课堂计时</button><button class="btn" onclick="go('phonics')">进入音标教学</button><button class="btn" onclick="go('words')">进入单词教学</button><button class="btn" onclick="go('reading')">进入课文朗读</button></div></div>
+<div class="card span-6"><h2>本节课目标</h2><ul><li>认识并读出 run、swim、jump、football、basketball、ping-pong、volleyball、sport。</li><li>能根据音标尝试拼读简单单词。</li><li>理解 can＝会/能，can’t＝不会/不能。</li><li>能进行 Can you…? 的简单问答。</li><li>能跟读并表演 Daming 对话。</li></ul></div>
+<div class="card span-6"><h2>上课原则</h2><ul><li>每个单词都走：看图/动作 → 音标 → 拼读 → 朗读 → 造句。</li><li>孩子读错时先示范，再让孩子重读，不要直接否定。</li><li>每10分钟安排一次小任务，避免一直听讲。</li><li>奖励“主动开口、自己拼读、愿意重试”，不只奖励全对。</li></ul></div>
+<div class="card span-12"><h2>课堂流程</h2><div class="timeline">
+<div class="stage"><b>1</b><div><strong>0—5分钟：基础摸底</strong><div class="muted small">问姓名；测试 cat、dog、book、run、swim；观察字母、元音和拼读基础。</div><p>教师话术：今天我们要学会看发音，把单词自己读出来。</p></div></div>
+<div class="stage"><b>2</b><div><strong>5—25分钟：音标与拼读</strong><div class="muted small">先复习 a、e、i、o、u，再结合 run /rʌn/、swim /swɪm/、jump /dʒʌmp/、high /haɪ/、far /fɑː/。</div><p>固定话术：看口型 → 听声音 → 跟读 → 分音 → 合音 → 放进句子。</p><p>示范：r-u-n → run → I can run.</p></div></div>
+<div class="stage"><b>3</b><div><strong>25—50分钟：课本重点单词</strong><div class="muted small">动作类：run、swim、jump；球类：football、basketball、ping-pong、volleyball；补充 sport、high、far、fast、well。</div><p>每教一个词都让孩子完成：读单词＋说意思＋拼读＋造句。</p></div></div>
+<div class="stage"><b>4</b><div><strong>50—60分钟：单词记忆闯关</strong><div class="muted small">中文说英文、英文读音、看音标猜词、补全单词、听写4个词。</div><p>示例：/rʌn/ → run；r_n → run；“跑步” → run。</p></div></div>
+<div class="stage"><b>5</b><div><strong>60—75分钟：课本对话与句型</strong><div class="muted small">重点：Can you…? / Yes, I can. / No, I can’t. / But I can learn.</div><p>先教师示范，再替换 run、swim、play football、play ping-pong，最后角色扮演 Daming。</p></div></div>
+<div class="stage"><b>6</b><div><strong>75—85分钟：综合输出</strong><div class="muted small">孩子当小老师提问；完成音标、单词、句子三关；鼓励自己纠错。</div><p>孩子至少说出：I can run. / I can swim. / Can you play ping-pong?</p></div></div>
+<div class="stage"><b>7</b><div><strong>85—90分钟：复习与作业</strong><div class="muted small">读3个单词、读1个音标、回答1个问题；布置朗读和单词作业。</div></div></div>
+</div></div>
+<div class="card span-6"><h2>教师可直接照读的话术</h2><div class="lesson-text">Look at this word.
+What does it mean?
+Listen to me.
+Repeat after me.
+Let’s sound it out.
+/r/ /ʌ/ /n/ — run.
+Now you try.
+Can you make a sentence?
+I can run.
+Great! Try it again.</div></div>
+<div class="card span-6"><h2>本节课作业</h2><div class="lesson-text">1. 朗读 Unit 1 重点单词，每个3遍。
+2. 抄写 run、swim、jump、football、basketball。
+3. 熟读 Can you…? / Yes, I can. / No, I can’t.
+4. 朗读课文5分钟。
+挑战：采访家人并记录：Mum can swim. / Dad can’t swim.</div></div>
+<div class="card span-12"><h2>下课记录提醒</h2><p class="muted">重点记录：孩子哪些音标不会、哪些单词需要拆音、哪些句型能独立说、下节课先复习什么。</p><button class="btn primary" onclick="go('notes')">去填写课堂记录</button></div>
+</div>`}
 
 function bindCommon(page){if(page==="timer")updateTimerUI()}
 function go(page){renderPage(page)}
